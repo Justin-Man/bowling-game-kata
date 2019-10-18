@@ -1,22 +1,28 @@
 class Game {
-    // TODO(on a refactor step)
     var score: Int = 0
-    var numberOfRolls = 0
-    var addingStrikeBonus = false
+    val frames = Array(10) { Frame() }
+    var currentFrame = 0
 
     fun roll(pins: Int) {
-        val test =2
-        if (numberOfRolls == 2 && score == 10) {
-            score += pins
+        frames[currentFrame].roll(pins)
+        if (frames[currentFrame].isComplete()) {
+            currentFrame++
         }
-        if (addingStrikeBonus) {
-            score += pins
-        }
-        score += pins
-        numberOfRolls++
 
-        if (numberOfRolls == 1 && score == 10) {
-            addingStrikeBonus = true
+        score = 0
+        frames.forEachIndexed { index, frame ->
+            var currentFrameScore = frame.TotalRolled
+            if ( index < 9 ) {
+                var nextFrame = frames[index + 1]
+                var bonus = 0
+                if (frame.IsStrike) {
+                    bonus = nextFrame.TotalRolled
+                } else if (frame.IsSpare) {
+                    bonus = nextFrame.roll1Pins ?: 0
+                }
+
+                score += currentFrameScore + bonus
+            }
         }
     }
 }

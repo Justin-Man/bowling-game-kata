@@ -1,31 +1,29 @@
 import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Test
 
 class BowlingGameTest {
 
+    lateinit var game: Game
+    @Before
+    fun setUp() {
+        game = Game()
+    }
+
     @Test
     fun `score is zero for no rolls`() {
-        val game = Game()
-
-        val result = game.score
-
-        assertEquals(0, result)
+        assertEquals(0, game.score)
     }
 
     @Test
     fun `score is two after first roll scores two`() {
-        val game = Game()
-        val pinsKnockedDown = 2
+        game.roll(2)
 
-        game.roll(pinsKnockedDown)
-
-        assertEquals(pinsKnockedDown, game.score)
+        assertEquals(2, game.score)
     }
 
     @Test
     fun `score is sum of two rolls`() {
-        val game = Game()
-
         game.roll(1)
         game.roll(2)
 
@@ -34,8 +32,6 @@ class BowlingGameTest {
 
     @Test
     fun `spare score is ten plus the next roll value`() {
-        val game = Game()
-
         game.roll(9)
         game.roll(1)
         game.roll(5)
@@ -46,12 +42,38 @@ class BowlingGameTest {
 
     @Test
     fun `strike score is ten plus next two roll values`() {
-        val game = Game()
-
         game.roll(10)
         game.roll(1)
         game.roll(5)
 
         assertEquals(22, game.score)
+    }
+
+    @Test
+    fun `score is 30 after two strikes`() {
+        game.roll(10)
+        game.roll(10)
+
+        assertEquals(30, game.score)
+    }
+
+    @Test
+    fun `score is 0 for 20 gutter rolls`() {
+        for(i in 0 until 20) {
+            game.roll(0)
+        }
+
+        assertEquals(0, game.score)
+    }
+
+    @Test
+    fun `score is 12 after strike on ninth frame and rolled 1 on tenth frame`() {
+        for(i in 0 until 16) {
+            game.roll(0)
+        }
+        game.roll(10)
+        game.roll(1)
+
+        assertEquals(12, game.score) // TODO: Get to green and refactor
     }
 }
