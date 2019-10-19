@@ -1,22 +1,24 @@
-class Game {
-    // TODO(on a refactor step)
-    var score: Int = 0
-    var numberOfRolls = 0
-    var addingStrikeBonus = false
+/**
+* Write a class named “Game” that has two methods
+roll(pins : int) is called each time the player rolls a ball.  The argument is the number of pins knocked down.
+score() : int is called only at the very end of the game.  It returns the total score for that game.
+* */
+
+class Game() {
+    // a way of keeping track of previous rolls
+    private val rolls = IntArray(21)
+    private var currentRoll = 0
 
     fun roll(pins: Int) {
-        val test =2
-        if (numberOfRolls == 2 && score == 10) {
-            score += pins
-        }
-        if (addingStrikeBonus) {
-            score += pins
-        }
-        score += pins
-        numberOfRolls++
-
-        if (numberOfRolls == 1 && score == 10) {
-            addingStrikeBonus = true
-        }
+        rolls[currentRoll++] = pins
     }
+
+    fun score(): Int {
+        var score = 0
+        for(i in rolls.indices) {
+            score += rolls[i]
+        }
+        return score
+    }
+
 }

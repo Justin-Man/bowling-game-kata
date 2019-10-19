@@ -1,57 +1,41 @@
 import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Test
 
 class BowlingGameTest {
 
-    @Test
-    fun `score is zero for no rolls`() {
-        val game = Game()
+    private lateinit var game: Game
 
-        val result = game.score
+    @Before
+    fun setUp() {
+        game = Game()
+    }
 
-        assertEquals(0, result)
+    private fun rollMany(numberOfRolls: Int, pins: Int) {
+        for (i in 0 until numberOfRolls) {
+            game.roll(pins);
+        }
     }
 
     @Test
-    fun `score is two after first roll scores two`() {
-        val game = Game()
-        val pinsKnockedDown = 2
-
-        game.roll(pinsKnockedDown)
-
-        assertEquals(pinsKnockedDown, game.score)
-    }
-
-    @Test
-    fun `score is sum of two rolls`() {
-        val game = Game()
-
-        game.roll(1)
-        game.roll(2)
-
-        assertEquals(3, game.score)
-    }
-
-    @Test
-    fun `spare score is ten plus the next roll value`() {
-        val game = Game()
-
-        game.roll(9)
-        game.roll(1)
-        game.roll(5)
-
-        assertEquals(20, game.score)
+    fun `score is zero for 20 rolls`() {
+        rollMany(20, 0)
+        assertEquals(0, game.score())
 
     }
 
     @Test
-    fun `strike score is ten plus next two roll values`() {
-        val game = Game()
-
-        game.roll(10)
-        game.roll(1)
-        game.roll(5)
-
-        assertEquals(22, game.score)
+    fun `score is 20 for 20 rolls`() {
+        rollMany(20, 1)
+        assertEquals(20, game.score())
     }
+
+//    @Test
+//    fun `score is 16 when one spare is scored in 20 rolls`() {
+//        game.roll(5)
+//        game.roll(5) // spare
+//        game.roll(3)
+//        rollMany(17,0);
+//        assertEquals(16, game.score());
+//    }
 }
