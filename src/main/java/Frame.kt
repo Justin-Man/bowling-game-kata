@@ -1,12 +1,13 @@
-class Frame {
+class Frame : IFrame {
 
-    var IsSpare: Boolean = false
-    var IsStrike: Boolean = false
-    var TotalRolled: Int = 0
-    var roll1Pins : Int? = null
+    override var IsSpare: Boolean = false
+    override var IsStrike: Boolean = false
+    override var TotalRolled: Int = 0
+    override var roll1Pins : Int? = null
+
     private var roll2Pins : Int? = null
 
-    fun roll(pins: Int) {
+    override fun roll(pins: Int) {
         if (roll1Pins == null) {
             roll1Pins = pins
             IsStrike = pins == 10
@@ -18,7 +19,7 @@ class Frame {
         TotalRolled = (roll1Pins ?: 0) + (roll2Pins ?: 0)
     }
 
-    fun isComplete() : Boolean {
+    override fun isComplete() : Boolean {
         return (roll1Pins != null && roll2Pins != null) || IsStrike
     }
 }

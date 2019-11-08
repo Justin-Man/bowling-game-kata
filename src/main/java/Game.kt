@@ -12,17 +12,22 @@ class Game {
         score = 0
         frames.forEachIndexed { index, frame ->
             var currentFrameScore = frame.TotalRolled
+            var bonus = 0
             if ( index < 9 ) {
-                var nextFrame = frames[index + 1]
-                var bonus = 0
-                if (frame.IsStrike) {
-                    bonus = nextFrame.TotalRolled
-                } else if (frame.IsSpare) {
-                    bonus = nextFrame.roll1Pins ?: 0
-                }
-
-                score += currentFrameScore + bonus
+                bonus = getFrameBonus(index, frame)
             }
+            score += currentFrameScore + bonus
         }
+    }
+
+    private fun getFrameBonus(index: Int, frame: Frame): Int {
+        var nextFrame = frames[index + 1]
+        if (frame.IsStrike) {
+            return nextFrame.TotalRolled
+        }
+        if (frame.IsSpare) {
+            return nextFrame.roll1Pins ?: 0
+        }
+        return 0
     }
 }
