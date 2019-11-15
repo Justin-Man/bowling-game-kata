@@ -84,14 +84,28 @@ class BowlingGameTest {
     }
 
     @Test
-    fun `on tenth frame player not allowed to roll extra ball if spare not scored on ninth frame`() {
+    fun `on tenth frame player not allowed to roll extra ball if spare not scored`() {
         rollManyEmptyFrames(9)
         game.roll(1)
         game.roll(2)
 
-        assertFailsWith(Exception::class) {
+        assertFailsWith(GameOverException::class) {
             game.roll(3)
         }
+    }
+
+    @Test
+    fun `on tenth frame player is allowed to roll extra ball if spare is scored`() {
+        rollManyEmptyFrames(9)
+        rollSpare()
+        game.roll(1)
+    }
+
+    @Test
+    fun `on tenth frame player is allowed to roll extra ball if strike is scored`() {
+        rollManyEmptyFrames(9)
+        rollStrike()
+        game.roll(1)
     }
 
     @Test
@@ -104,6 +118,29 @@ class BowlingGameTest {
         // todo: get to green, create class called FinalFrame implementing IFrame,
         //  add to Frame and FinalFrame to Starting Array to handle cases specific to final frame
         //  maybe move logic from Game to Frame - eg: getFrameBonus?
+    }
+
+    @Test
+    fun `score is 30 when 3 strikes is rolled on tenth frame`() {
+        rollManyEmptyFrames(9)
+        rollStrike()
+        rollStrike()
+        rollStrike()
+
+        assertEquals(30, game.score)
+    }
+
+    @Test
+    fun `score is 300 for game with all strikes scored`() {
+        for (i in 0 until 9) {
+            rollStrike()
+        }
+
+        rollStrike()
+        rollStrike()
+        rollStrike()
+
+        assertEquals(300, game.score)
     }
 
     private fun rollStrike() {

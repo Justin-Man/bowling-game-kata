@@ -1,17 +1,24 @@
 class Game {
     var score: Int = 0
-    val frames = Array(10) { Frame() }
+    val frames = Array(10) { Frame(it) }
     var currentFrame = 0
 
     fun roll(pins: Int) {
+        if(frames.all {
+            frame -> frame.isComplete()
+        }) {
+            throw GameOverException()
+        }
+
         frames[currentFrame].roll(pins)
         if (frames[currentFrame].isComplete()) {
+            if (currentFrame < 9)
             currentFrame++
         }
 
         score = 0
         frames.forEachIndexed { index, frame ->
-            var currentFrameScore = frame.TotalRolled
+            val currentFrameScore = frame.TotalRolled
             var bonus = 0
             if ( index < 9 ) {
                 bonus = getFrameBonus(index, frame)
@@ -21,7 +28,7 @@ class Game {
     }
 
     private fun getFrameBonus(index: Int, frame: Frame): Int {
-        var nextFrame = frames[index + 1]
+        val nextFrame = frames[index + 1]
         if (frame.IsStrike) {
             return nextFrame.TotalRolled
         }
