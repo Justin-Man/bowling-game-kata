@@ -6,7 +6,7 @@ class Frame(private val frameIndex: Int) : IFrame {
     override var roll1Pins : Int? = null
     private var roll3pins : Int? = null
 
-    private var roll2Pins : Int? = null
+    override var roll2Pins : Int? = null
 
     override fun roll(pins: Int) {
         if (roll1Pins == null) {

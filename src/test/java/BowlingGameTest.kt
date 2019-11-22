@@ -143,6 +143,15 @@ class BowlingGameTest {
         assertEquals(300, game.score)
     }
 
+    @Test
+    fun `Score is 60 when 3 strikes rolled in a row`() {
+        rollStrike()
+        rollStrike()
+        rollStrike()
+
+        assertEquals(60, game.score)
+    }
+
     private fun rollStrike() {
         game.roll(10)
     }
