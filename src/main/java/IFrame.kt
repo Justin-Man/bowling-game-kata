@@ -1,8 +1,8 @@
 interface IFrame {
 
-    var IsSpare: Boolean
-    var IsStrike: Boolean
-    var TotalRolled: Int
+    var isSpare: Boolean
+    var isStrike: Boolean
+    var totalRolled: Int
     var roll1Pins : Int?
     var roll2Pins : Int?
     var isComplete: Boolean

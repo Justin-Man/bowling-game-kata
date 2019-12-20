@@ -8,9 +8,9 @@ class FinalFrame : Frame(), IFrame {
         } else {
             super.roll(pins)
         }
-        TotalRolled = super.TotalRolled + (roll3pins ?: 0)
+        totalRolled = super.totalRolled + (roll3pins ?: 0)
 
-        if(IsStrike || IsSpare) {
+        if(isStrike || isSpare) {
           isComplete = roll3pins != null
         }
     }
