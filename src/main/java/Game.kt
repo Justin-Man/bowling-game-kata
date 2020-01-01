@@ -6,9 +6,7 @@ class Game {
     var currentFrame = 0
 
     fun roll(pins: Int) {
-        if (frames.all { frame ->
-                    frame.isComplete
-                }) {
+        if (frames.all { it.isComplete }) {
             throw GameOverException()
         }
 
