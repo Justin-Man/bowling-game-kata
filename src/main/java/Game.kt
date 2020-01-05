@@ -1,8 +1,11 @@
+private const val MAX_FRAMES = 10
+
 class Game {
     var score: Int = 0
     private var currentFrame = 0
     private val finalFrame = 9
-    private val frames = Array(10) {
+
+    private val frames = Array(MAX_FRAMES) {
        if (it < finalFrame) Frame() else FinalFrame()
     }
 
