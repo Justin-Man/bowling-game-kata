@@ -12,8 +12,7 @@ class Game {
         }
 
         frames[currentFrame].roll(pins)
-        if (frames[currentFrame].isComplete) {
-            if (currentFrame < 9)
+        if (frames[currentFrame].isComplete && currentFrame < finalFrame) {
                 currentFrame++
         }
 
@@ -31,19 +30,17 @@ class Game {
     private fun getFrameBonus(index: Int, frame: IFrame): Int {
         val penultimateFrame = 8
         val nextFrame = frames[index + 1]
-        if (frame.isStrike) {
-            if (nextFrame.isStrike && index < 8) {
-                val frameAfter = frames[index + 2]
-                return nextFrame.totalRolled + (frameAfter.roll1Pins ?: 0)
+        return when {
+            frame.isStrike -> when {
+                nextFrame.isStrike && index < penultimateFrame -> {
+                    val frameAfter = frames[index + 2]
+                    nextFrame.totalRolled + (frameAfter.roll1Pins ?: 0)
+                }
+                index == penultimateFrame -> (nextFrame.roll1Pins ?: 0) + (nextFrame.roll2Pins ?: 0)
+                else -> nextFrame.totalRolled
             }
-            if (index == 8) {
-                return (nextFrame.roll1Pins ?: 0) + (nextFrame.roll2Pins ?: 0)
-            }
-            return nextFrame.totalRolled
+            frame.isSpare -> nextFrame.roll1Pins ?: 0
+            else -> 0
         }
-        if (frame.isSpare) {
-            return nextFrame.roll1Pins ?: 0
-        }
-        return 0
     }
 }
