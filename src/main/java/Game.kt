@@ -1,9 +1,10 @@
 class Game {
     var score: Int = 0
-    val frames = Array(10) {
-       if (it < 9) Frame() else FinalFrame()
+    private var currentFrame = 0
+    private val finalFrame = 9
+    private val frames = Array(10) {
+       if (it < finalFrame) Frame() else FinalFrame()
     }
-    var currentFrame = 0
 
     fun roll(pins: Int) {
         if (frames.all { it.isComplete }) {
@@ -20,7 +21,7 @@ class Game {
         frames.forEachIndexed { index, frame ->
             val currentFrameScore = frame.totalRolled
             var bonus = 0
-            if (index < 9) {
+            if (index < finalFrame) {
                 bonus = getFrameBonus(index, frame)
             }
             score += currentFrameScore + bonus
@@ -28,6 +29,7 @@ class Game {
     }
 
     private fun getFrameBonus(index: Int, frame: IFrame): Int {
+        val penultimateFrame = 8
         val nextFrame = frames[index + 1]
         if (frame.isStrike) {
             if (nextFrame.isStrike && index < 8) {
