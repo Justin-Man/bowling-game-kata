@@ -19,30 +19,33 @@ class Game {
                 currentFrame++
         }
 
+
         frames.forEachIndexed { index, frame ->
             val currentFrameScore = frame.totalRolled
-            var bonus = 0
-            if (index < finalFrame) {
-                bonus = getFrameBonus(index, frame)
-            }
+            val bonus = getFrameBonus(index, frame)
             score += currentFrameScore + bonus
         }
     }
 
     private fun getFrameBonus(index: Int, frame: IFrame): Int {
+        if (index == finalFrame) return 0
         val penultimateFrame = 8
         val nextFrame = frames[index + 1]
         return when {
-            frame.isStrike -> when {
-                nextFrame.isStrike && index < penultimateFrame -> {
-                    val frameAfter = frames[index + 2]
-                    nextFrame.totalRolled + (frameAfter.roll1Pins ?: 0)
-                }
-                index == penultimateFrame -> (nextFrame.roll1Pins ?: 0) + (nextFrame.roll2Pins ?: 0)
-                else -> nextFrame.totalRolled
-            }
+            frame.isStrike -> getStrikeBonus(nextFrame, index, penultimateFrame)
             frame.isSpare -> nextFrame.roll1Pins ?: 0
             else -> 0
+        }
+    }
+
+    private fun getStrikeBonus(nextFrame: Frame, index: Int, penultimateFrame: Int): Int {
+        return when {
+            nextFrame.isStrike && index < penultimateFrame -> {
+                val frameAfter = frames[index + 2]
+                nextFrame.totalRolled + (frameAfter.roll1Pins ?: 0)
+            }
+            index == penultimateFrame -> (nextFrame.roll1Pins ?: 0) + (nextFrame.roll2Pins ?: 0)
+            else -> nextFrame.totalRolled
         }
     }
 }
