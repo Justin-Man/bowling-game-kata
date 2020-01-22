@@ -13,13 +13,12 @@ class Game {
         if (frames.all { it.isComplete }) {
             throw GameOverException()
         }
-
+        score = 0
         frames[currentFrame].roll(pins)
         if (frames[currentFrame].isComplete && currentFrame < finalFrame) {
                 currentFrame++
         }
 
-        score = 0
         frames.forEachIndexed { index, frame ->
             val currentFrameScore = frame.totalRolled
             var bonus = 0

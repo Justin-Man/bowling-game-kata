@@ -115,9 +115,6 @@ class BowlingGameTest {
         game.roll(2)
 
         assertEquals(12, game.score)
-        // todo: get to green, create class called FinalFrame implementing IFrame,
-        //  add to Frame and FinalFrame to Starting Array to handle cases specific to final frame
-        //  maybe move logic from Game to Frame - eg: getFrameBonus?
     }
 
     @Test
