@@ -6,7 +6,11 @@ class Game {
     private val finalFrame = 9
 
     private val frames = Array(MAX_FRAMES) {
-       if (it < finalFrame) Frame() else FinalFrame()
+        var frame = Frame()
+        if (it == finalFrame)
+            frame = FinalFrame()
+
+        frame
     }
 
     fun roll(pins: Int) {
@@ -31,21 +35,26 @@ class Game {
         if (index == finalFrame) return 0
         val penultimateFrame = 8
         val nextFrame = frames[index + 1]
-        return when {
-            frame.isStrike -> getStrikeBonus(nextFrame, index, penultimateFrame)
-            frame.isSpare -> nextFrame.roll1Pins ?: 0
-            else -> 0
+        var frameBonus = 0
+        if (frame.isStrike) {
+           frameBonus =  getStrikeBonus(nextFrame, index, penultimateFrame)
         }
+        if (frame.isSpare) {
+            frameBonus = nextFrame.roll1Pins ?: 0
+        }
+
+        return frameBonus
     }
 
     private fun getStrikeBonus(nextFrame: Frame, index: Int, penultimateFrame: Int): Int {
-        return when {
-            nextFrame.isStrike && index < penultimateFrame -> {
-                val frameAfter = frames[index + 2]
-                nextFrame.totalRolled + (frameAfter.roll1Pins ?: 0)
-            }
-            index == penultimateFrame -> (nextFrame.roll1Pins ?: 0) + (nextFrame.roll2Pins ?: 0)
-            else -> nextFrame.totalRolled
+        var strikeBonus = nextFrame.totalRolled
+        if (nextFrame.isStrike && index < penultimateFrame) {
+            val frameAfter = frames[index + 2]
+            strikeBonus = nextFrame.totalRolled + (frameAfter.roll1Pins ?: 0)
         }
+        if (index == penultimateFrame) {
+            strikeBonus = (nextFrame.roll1Pins ?: 0) + (nextFrame.roll2Pins ?: 0)
+        }
+        return strikeBonus
     }
 }

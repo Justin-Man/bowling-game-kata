@@ -8,12 +8,14 @@ open class Frame : IFrame {
     override var isComplete : Boolean = false
 
     override fun roll(pins: Int) {
+        if (!firstRollIncomplete() && secondRollIncomplete()) {
+            roll2Pins = pins
+            isSpare = calculateTotalRolled() == 10
+        }
+
         if (firstRollIncomplete()) {
             roll1Pins = pins
             isStrike = pins == 10
-        } else if (secondRollIncomplete()) {
-            roll2Pins = pins
-            isSpare = calculateTotalRolled() == 10
         }
 
         totalRolled = calculateTotalRolled()
