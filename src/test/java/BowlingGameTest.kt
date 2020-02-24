@@ -13,14 +13,14 @@ class BowlingGameTest {
 
     @Test
     fun `score is zero for no rolls`() {
-        assertEquals(0, game.score)
+        assertEquals(Score(0), game.score)
     }
 
     @Test
     fun `score is two after first roll scores two`() {
         game.roll(2)
 
-        assertEquals(2, game.score)
+        assertEquals(Score(2), game.score)
     }
 
     @Test
@@ -28,7 +28,7 @@ class BowlingGameTest {
         game.roll(1)
         game.roll(2)
 
-        assertEquals(3, game.score)
+        assertEquals(Score(3), game.score)
     }
 
     @Test
@@ -36,7 +36,7 @@ class BowlingGameTest {
         rollSpare()
         game.roll(5)
 
-        assertEquals(20, game.score)
+        assertEquals(Score(20), game.score)
 
     }
 
@@ -46,7 +46,7 @@ class BowlingGameTest {
         game.roll(1)
         game.roll(5)
 
-        assertEquals(22, game.score)
+        assertEquals(Score(22), game.score)
     }
 
     @Test
@@ -55,14 +55,14 @@ class BowlingGameTest {
         rollStrike()
         rollEmptyFrame()
 
-        assertEquals(30, game.score)
+        assertEquals(Score(30), game.score)
     }
 
     @Test
     fun `score is 0 for 20 gutter rolls`() {
         rollManyEmptyFrames(10)
 
-        assertEquals(0, game.score)
+        assertEquals(Score(0), game.score)
     }
 
     @Test
@@ -71,7 +71,7 @@ class BowlingGameTest {
         rollStrike()
         game.roll(1)
         game.roll(2)
-        assertEquals(16, game.score)
+        assertEquals(Score(16), game.score)
     }
 
     @Test
@@ -81,7 +81,7 @@ class BowlingGameTest {
         game.roll(1)
         game.roll(2)
 
-        assertEquals(14, game.score)
+        assertEquals(Score(14), game.score)
     }
 
     @Test
@@ -115,7 +115,7 @@ class BowlingGameTest {
         rollSpare()
         game.roll(2)
 
-        assertEquals(12, game.score)
+        assertEquals(Score(12), game.score)
     }
 
     @Test
@@ -125,7 +125,7 @@ class BowlingGameTest {
         rollStrike()
         rollStrike()
 
-        assertEquals(30, game.score)
+        assertEquals(Score(30), game.score)
     }
 
     @Test
@@ -138,7 +138,7 @@ class BowlingGameTest {
         rollStrike()
         rollStrike()
 
-        assertEquals(300, game.score)
+        assertEquals(Score(300), game.score)
     }
 
     @Test
@@ -147,7 +147,7 @@ class BowlingGameTest {
         rollStrike()
         rollStrike()
 
-        assertEquals(60, game.score)
+        assertEquals(Score(60), game.score)
     }
 
     private fun rollStrike() {
