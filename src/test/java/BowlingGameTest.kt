@@ -53,6 +53,7 @@ class BowlingGameTest {
     fun `score is 30 after two strikes`() {
         rollStrike()
         rollStrike()
+        rollEmptyFrame()
 
         assertEquals(30, game.score)
     }

@@ -8,7 +8,7 @@ open class Frame : IFrame {
     override var isComplete : Boolean = false
 
     override fun roll(pins: Int) {
-        if (!firstRollIncomplete() && secondRollIncomplete()) {
+        if (firstRollComplete() && secondRollIncomplete()) {
             roll2Pins = pins
             isSpare = calculateTotalRolled() == 10
         }
@@ -21,6 +21,8 @@ open class Frame : IFrame {
         totalRolled = calculateTotalRolled()
         isComplete = isFrameComplete()
     }
+
+    private fun firstRollComplete() = roll1Pins != null
 
     private fun firstRollIncomplete() = roll1Pins == null
 
