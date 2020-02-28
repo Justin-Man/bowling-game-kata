@@ -1,0 +1,1 @@
+data class Score(private var gameScore: Int = 0)
