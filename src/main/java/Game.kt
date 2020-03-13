@@ -1,8 +1,6 @@
 
 class Game {
     var score = Score()
-    private var currentFrame = 0
-    private val finalFrame = 9
 
     private val frames = Frames()
 
@@ -11,10 +9,7 @@ class Game {
             throw GameOverException()
         }
 
-        frames.roll(currentFrame, pins)
-        if (frames.isFrameComplete(currentFrame) && currentFrame < finalFrame) {
-            currentFrame++
-        }
+        frames.roll(pins)
 
         score = frames.calculateTotalScore()
     }
