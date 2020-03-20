@@ -5,12 +5,17 @@ class FinalFrame : Frame(), IFrame {
     override fun roll(pins: Int) {
         val rollStrategy = getRollStrategy()
         rollStrategy(pins)
+    }
 
-        totalRolled = super.totalRolled + (roll3pins ?: 0)
+    override fun totalRolled(): Int {
+        return super.totalRolled() + (roll3pins ?: 0)
+    }
 
-        if (isStrike || isSpare) {
-            isComplete = roll3pins != null
+    override fun isComplete(): Boolean {
+        if (isStrike() || isSpare()) {
+           return roll3pins != null
         }
+        return super.isComplete()
     }
 
     fun getRollStrategy() : (Int) -> Unit {

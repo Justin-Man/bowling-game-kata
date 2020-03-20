@@ -3,14 +3,14 @@
 class Frames {
     private val frames = mutableListOf<IFrame>()
 
-    fun allFramesComplete() = frames.size == 10 && frames.all { it.isComplete }
+    fun allFramesComplete() = frames.size == 10 && frames.all { it.isComplete() }
     fun roll(pins: Int) {
         if (frames.size == 0){
             addNewFrame()
         }
         frames.last().roll(pins)
 
-        if (frames.size < 10 && frames.last().isComplete) {
+        if (frames.size < 10 && frames.last().isComplete()) {
             addNewFrame()
         }
     }
@@ -31,7 +31,7 @@ class Frames {
     }
 
     private fun calculateFrameScore(index: Int) : Int {
-        return frames[index].totalRolled + getFrameBonus(index)
+        return frames[index].totalRolled() + getFrameBonus(index)
     }
 
     private fun getFrameBonus(index: Int): Int {
@@ -39,8 +39,8 @@ class Frames {
         if (index == finalFrame) return 0
         val nextFrame = tryGetFrame(index + 1)
         return when {
-            frames[index].isStrike -> getStrikeBonus(index)
-            frames[index].isSpare -> nextFrame?.roll1Pins ?: 0
+            frames[index].isStrike() -> getStrikeBonus(index)
+            frames[index].isSpare() -> nextFrame?.roll1Pins ?: 0
             else -> 0
         }
     }
@@ -54,10 +54,10 @@ class Frames {
     private fun getStrikeBonus(index: Int): Int {
         val penultimateFrame = 8
         val nextFrame = frames[index + 1]
-        var strikeBonus = nextFrame.totalRolled
-        if (nextFrame.isStrike && index < penultimateFrame) {
+        var strikeBonus = nextFrame.totalRolled()
+        if (nextFrame.isStrike() && index < penultimateFrame) {
             val frameAfter = frames[index + 2]
-            strikeBonus = nextFrame.totalRolled + (frameAfter.roll1Pins ?: 0)
+            strikeBonus = nextFrame.totalRolled() + (frameAfter.roll1Pins ?: 0)
         }
         if (index == penultimateFrame) {
             strikeBonus = (nextFrame.roll1Pins ?: 0) + (nextFrame.roll2Pins ?: 0)
