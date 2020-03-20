@@ -1,7 +1,5 @@
 interface IFrame {
-
-    var roll1Pins : Int?
-    var roll2Pins : Int?
+    var rolls : Rolls
 
     fun roll(pins: Int)
     fun isSpare() : Boolean

@@ -1,23 +1,16 @@
 open class Frame : IFrame {
 
-    override var roll1Pins : Int? = null
-    override var roll2Pins : Int? = null
+    override var rolls = Rolls()
 
     override fun roll(pins: Int) {
-        if (roll1Pins != null && roll2Pins == null) {
-            roll2Pins = pins
-        }
-
-        if (roll1Pins == null) {
-            roll1Pins = pins
-        }
+        rolls.add(pins)
     }
 
     override fun isSpare() = !isStrike() && totalRolled() == 10
 
-    override fun isStrike() = roll1Pins == 10
+    override fun isStrike() = rolls.first() == 10
 
-    override fun totalRolled() = (roll1Pins ?: 0) + (roll2Pins ?: 0)
+    override fun totalRolled() = (rolls.first() ?: 0) + (rolls.second() ?: 0)
 
-    override fun isComplete() = (roll1Pins != null && roll2Pins != null) || isStrike()
+    override fun isComplete() = (rolls.first() != null && rolls.second() != null) || isStrike()
 }

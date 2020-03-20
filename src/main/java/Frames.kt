@@ -40,7 +40,7 @@ class Frames {
         val nextFrame = tryGetFrame(index + 1)
         return when {
             frames[index].isStrike() -> getStrikeBonus(index)
-            frames[index].isSpare() -> nextFrame?.roll1Pins ?: 0
+            frames[index].isSpare() -> nextFrame?.rolls?.first() ?: 0
             else -> 0
         }
     }
@@ -57,10 +57,10 @@ class Frames {
         var strikeBonus = nextFrame.totalRolled()
         if (nextFrame.isStrike() && index < penultimateFrame) {
             val frameAfter = frames[index + 2]
-            strikeBonus = nextFrame.totalRolled() + (frameAfter.roll1Pins ?: 0)
+            strikeBonus = nextFrame.totalRolled() + (frameAfter.rolls.first() ?: 0)
         }
         if (index == penultimateFrame) {
-            strikeBonus = (nextFrame.roll1Pins ?: 0) + (nextFrame.roll2Pins ?: 0)
+            strikeBonus = (nextFrame.rolls.first() ?: 0) + (nextFrame.rolls.second() ?: 0)
         }
         return strikeBonus
     }
