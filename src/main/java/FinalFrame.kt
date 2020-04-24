@@ -1,4 +1,4 @@
-class FinalFrame : Frame() {
+class FinalFrame : Frame(index = 9) {
 
     override fun totalRolled(): Int {
         return super.totalRolled() + (rolls.third() ?: 0)

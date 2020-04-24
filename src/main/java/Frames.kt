@@ -16,15 +16,14 @@ class Frames {
     }
 
     private fun addNewFrame(): Frame {
-        val frame = if (frames.size == 9) FinalFrame() else Frame()
+        val frame = if (frames.size == 9) FinalFrame() else Frame(frames.size)
         frames.add(frame)
         return frame
     }
 
     fun calculateTotalScore() : Score {
-        var score = 0
-        for (index in frames.indices) {
-            score += frames[index].applyFrameScore(index, this)
+        val score = frames.sumBy {
+            it.applyFrameScore(this)
         }
 
         return Score(score)

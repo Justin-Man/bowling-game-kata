@@ -1,4 +1,4 @@
-open class Frame  {
+open class Frame(private val index: Int)  {
 
     var rolls = Rolls()
 
@@ -14,30 +14,29 @@ open class Frame  {
 
     open fun isComplete() = (rolls.first() != null && rolls.second() != null) || isStrike()
 
-    fun applyFrameScore(index: Int, frames: Frames) =
-            totalRolled() + getFrameBonus(index, frames)
+    fun applyFrameScore(frames: Frames) =
+            totalRolled() + getFrameBonus(frames)
 
-    private fun getFrameBonus(index: Int, frames: Frames): Int  {
+    private fun getFrameBonus(frames: Frames): Int  {
         val finalFrame = 9
         if (index == finalFrame) return 0
         val nextFrame = frames.tryGetFrame(index + 1)
         return when {
-            this.isStrike() -> getStrikeBonus(index, frames)
+            this.isStrike() -> getStrikeBonus(frames)
             this.isSpare() -> getSpareBonus(nextFrame)
             else -> 0
         }
     }
 
-    private fun getStrikeBonus(index: Int, frames: Frames): Int {
+    private fun getStrikeBonus(frames: Frames): Int {
         val penultimateFrame = 8
         val nextFrame = frames.tryGetFrame(index + 1)
         var strikeBonus = nextFrame?.totalRolled()
-        if (nextFrame != null) {
-            if (nextFrame.isStrike() && index < penultimateFrame) {
-                val frameAfter = frames.tryGetFrame(index + 2)
-                strikeBonus = nextFrame.totalRolled() + (frameAfter?.rolls?.first() ?: 0)
-            }
+        if (nextFrame != null && nextFrame.isStrike() && index < penultimateFrame) {
+            val frameAfter = frames.tryGetFrame(index + 2)
+            strikeBonus = nextFrame.totalRolled() + (frameAfter?.rolls?.first() ?: 0)
         }
+
         if (index == penultimateFrame) {
             strikeBonus = (nextFrame?.rolls?.first() ?: 0) + (nextFrame?.rolls?.second() ?: 0)
         }
