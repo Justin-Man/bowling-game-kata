@@ -1,8 +1,8 @@
-open class Frame : IFrame {
+open class Frame  {
 
-    override var rolls = Rolls()
+    var rolls = Rolls()
 
-    override fun roll(pins: Int) {
+    fun roll(pins: Int) {
         rolls.add(pins)
     }
 
@@ -12,9 +12,9 @@ open class Frame : IFrame {
 
     open fun totalRolled() = (rolls.first() ?: 0) + (rolls.second() ?: 0)
 
-    override fun isComplete() = (rolls.first() != null && rolls.second() != null) || isStrike()
+    open fun isComplete() = (rolls.first() != null && rolls.second() != null) || isStrike()
 
-    override fun applyFrameScore(index: Int, frames: Frames) =
+    fun applyFrameScore(index: Int, frames: Frames) =
             totalRolled() + getFrameBonus(index, frames)
 
     private fun getFrameBonus(index: Int, frames: Frames): Int  {
@@ -44,7 +44,7 @@ open class Frame : IFrame {
         return strikeBonus ?: 0
     }
 
-    private fun getSpareBonus(nextFrame: IFrame?): Int {
+    private fun getSpareBonus(nextFrame: Frame?): Int {
         return nextFrame?.rolls?.first() ?: 0
     }
 }

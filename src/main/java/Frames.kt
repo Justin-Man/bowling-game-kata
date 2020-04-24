@@ -15,7 +15,7 @@ class Frames {
         }
     }
 
-    private fun addNewFrame(): IFrame {
+    private fun addNewFrame(): Frame {
         val frame = if (frames.size == 9) FinalFrame() else Frame()
         frames.add(frame)
         return frame
