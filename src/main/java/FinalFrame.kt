@@ -1,7 +1,7 @@
 class FinalFrame : Frame(index = 9) {
 
-    override fun totalRolled(): Int {
-        return super.totalRolled() + (rolls.third() ?: 0)
+    override fun totalRolled(): Score {
+        return super.totalRolled().add(Score(rolls.third() ?: 0))
     }
 
     override fun isComplete(): Boolean {

@@ -22,11 +22,12 @@ class Frames {
     }
 
     fun calculateTotalScore() : Score {
-        val score = frames.sumBy {
-            it.applyFrameScore(this)
+        var score = Score(0)
+        frames.forEach {
+          score = it.applyFrameScore(score, this)
         }
 
-        return Score(score)
+        return score
     }
 
     fun tryGetFrame(index: Int) =
