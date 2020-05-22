@@ -1,12 +1,12 @@
 class FinalFrame : Frame() {
 
     override fun totalRolled(): Score {
-        return super.totalRolled().add(Score(rolls.third() ?: 0))
+        return super.totalRolled().add(Score(rolls.third().pins))
     }
 
     override fun isComplete(): Boolean {
         if (isStrike() || isSpare()) {
-           return rolls.third() != null
+           return rolls.third() !is NotRolled
         }
         return super.isComplete()
     }

@@ -1,19 +1,20 @@
 class Rolls {
-    private val rolls = mutableListOf<Int>()
+    private val rolls = mutableListOf<Roll>()
 
+    private val notRolled = NotRolled()
     fun add(pins: Int) {
-        rolls.add(pins)
+        rolls.add(Roll(pins))
     }
 
-    fun first() : Int? {
-        return rolls.firstOrNull()
+    fun first() : Roll {
+        return rolls.getOrElse(0) { notRolled }
     }
 
-    fun second() : Int? {
-        return rolls.getOrNull(1)
+    fun second() : Roll {
+        return rolls.getOrElse(1) { notRolled }
     }
 
-    fun third() : Int? {
-        return rolls.getOrNull(2)
+    fun third() : Roll {
+        return rolls.getOrElse(2) { notRolled }
     }
 }
