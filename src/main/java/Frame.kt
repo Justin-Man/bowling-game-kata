@@ -1,8 +1,8 @@
-open class Frame {
+open class Frame : IFrame {
 
-    protected var rolls = Rolls()
+    override var rolls = Rolls()
 
-    protected var nextFrame : Frame? = null
+    protected var nextFrame : IFrame = EmptyFrame()
 
     fun setNext(frame: Frame) {
         nextFrame = frame
@@ -16,31 +16,31 @@ open class Frame {
 
     protected fun isStrike() = rolls.first() == 10
 
-    open fun totalRolled() = Score((rolls.first() ?: 0) + (rolls.second() ?: 0))
+    override fun totalRolled() = Score((rolls.first() ?: 0) + (rolls.second() ?: 0))
 
-    open fun isComplete() = (rolls.first() != null && rolls.second() != null) || isStrike()
+    override fun isComplete() = (rolls.first() != null && rolls.second() != null) || isStrike()
 
     fun applyFrameScore(score: Score) =
             score.add(totalRolled())
                  .add(getFrameBonus())
 
-    open fun getFrameBonus(): Score {
+    override fun getFrameBonus(): Score {
         return when {
-            this.isStrike() -> nextFrame?.giveStrikeBonus() ?: Score(0)
-            this.isSpare() -> nextFrame?.giveSpareBonus() ?: Score(0)
+            this.isStrike() -> nextFrame.giveStrikeBonus()
+            this.isSpare() -> nextFrame.giveSpareBonus()
             else -> Score(0)
         }
     }
 
-    open fun giveStrikeBonus() : Score {
+    override fun giveStrikeBonus() : Score {
         var strikeBonus = totalRolled()
         if (isStrike()) {
-            strikeBonus = strikeBonus.add(Score((nextFrame?.rolls?.first() ?: 0)))
+            strikeBonus = strikeBonus.add(Score((nextFrame.rolls.first() ?: 0)))
         }
         return strikeBonus
     }
 
-    private fun giveSpareBonus(): Score {
+     override fun giveSpareBonus(): Score {
         return Score(rolls.first() ?: 0)
     }
 }
