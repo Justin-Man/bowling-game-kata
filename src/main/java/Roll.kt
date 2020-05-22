@@ -1,6 +1,3 @@
-open class Roll(val pins : Int) {
+open class Roll(val pins : Int)
 
-}
-
-class NotRolled : Roll(0) {
-}
+class NotRolled : Roll(0)

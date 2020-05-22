@@ -3,7 +3,11 @@ class Rolls {
 
     private val notRolled = NotRolled()
     fun add(pins: Int) {
-        rolls.add(Roll(pins))
+        if (pins == 10) {
+            rolls.add(Strike())
+        } else {
+            rolls.add(Roll(pins))
+        }
     }
 
     fun first() : Roll {

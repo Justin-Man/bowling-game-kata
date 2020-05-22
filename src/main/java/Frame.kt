@@ -14,9 +14,9 @@ open class Frame : IFrame {
 
     protected fun isSpare() = !isStrike() && totalRolled() == Score(10)
 
-    protected fun isStrike() = rolls.first().pins == 10
+    protected fun isStrike() = rolls.first() is Strike
 
-    override fun totalRolled() = Score(rolls.first().pins + rolls.second().pins)
+    override fun totalRolled() = Score(rolls.first()).add(rolls.second())
 
     override fun isComplete() = (rolls.first() !is NotRolled && rolls.second() !is NotRolled) || isStrike()
 
@@ -35,12 +35,12 @@ open class Frame : IFrame {
     override fun giveStrikeBonus() : Score {
         var strikeBonus = totalRolled()
         if (isStrike()) {
-            strikeBonus = strikeBonus.add(Score(nextFrame.rolls.first().pins))
+            strikeBonus = strikeBonus.add(Score(nextFrame.rolls.first()))
         }
         return strikeBonus
     }
 
      override fun giveSpareBonus(): Score {
-        return Score(rolls.first().pins)
+        return Score(rolls.first())
     }
 }

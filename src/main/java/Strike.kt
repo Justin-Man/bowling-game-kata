@@ -1,0 +1,1 @@
+class Strike : Roll(10)
