@@ -34,7 +34,7 @@ open class Frame : IFrame {
         return when {
             this.isStrike() -> nextFrame.giveStrikeBonus()
             this.isSpare() -> nextFrame.giveSpareBonus()
-            else -> Score(0)
+            else -> Score()
         }
     }
 

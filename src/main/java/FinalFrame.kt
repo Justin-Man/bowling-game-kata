@@ -12,7 +12,7 @@ class FinalFrame : Frame() {
     }
 
     override fun getFrameBonus(): Score {
-        return Score(0)
+        return Score()
     }
 
     override fun giveStrikeBonus(): Score {

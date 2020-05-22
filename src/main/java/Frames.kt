@@ -20,7 +20,7 @@ class Frames {
     }
 
     fun calculateTotalScore(): Score {
-        var score = Score(0)
+        var score = Score()
         frames.forEach {
             score = it.applyFrameScore(score)
         }
