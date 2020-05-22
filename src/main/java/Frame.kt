@@ -1,5 +1,9 @@
 open class Frame : IFrame {
 
+    companion object {
+        const val MAX_PINS = 10
+    }
+
     override var rolls = Rolls()
 
     protected var nextFrame : IFrame = EmptyFrame()
@@ -12,7 +16,7 @@ open class Frame : IFrame {
         rolls.add(pins)
     }
 
-    protected fun isSpare() = !isStrike() && totalRolled() == Score(10)
+    protected fun isSpare() = !isStrike() && totalRolled() == Score(MAX_PINS)
 
     protected fun isStrike() = rolls.first() is Strike
 
