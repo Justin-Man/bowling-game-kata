@@ -4,7 +4,7 @@ open class Frame : IFrame {
         const val MAX_PINS = 10
     }
 
-    override var rolls = Rolls()
+    protected var rolls = Rolls()
 
     protected var nextFrame : IFrame = EmptyFrame()
 
@@ -41,7 +41,7 @@ open class Frame : IFrame {
     override fun giveStrikeBonus() : Score {
         var strikeBonus = totalRolled()
         if (isStrike()) {
-            strikeBonus = strikeBonus.add(nextFrame.rolls.first())
+            strikeBonus = strikeBonus.add(nextFrame.giveSpareBonus())
         }
         return strikeBonus
     }

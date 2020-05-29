@@ -1,6 +1,5 @@
 interface IFrame {
 
-    var rolls : Rolls
 
     fun totalRolled(): Score
 

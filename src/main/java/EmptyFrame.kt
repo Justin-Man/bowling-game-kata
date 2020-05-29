@@ -1,7 +1,5 @@
 class EmptyFrame : IFrame {
 
-    override var rolls = Rolls()
-
     override fun totalRolled(): Score {
         return Score(0)
     }
