@@ -11,11 +11,11 @@ class FinalFrame : Frame() {
         return super.isComplete()
     }
 
-    override fun getFrameBonus(): Score {
-        return Score()
+    override fun applyFrameBonus(score: Score): Score {
+        return score
     }
 
-    override fun giveStrikeBonus(): Score {
-        return super.totalRolled()
+    override fun applyStrikeBonus(score: Score): Score {
+        return score.add(super.totalRolled())
     }
 }

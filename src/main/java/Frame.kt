@@ -26,27 +26,28 @@ open class Frame : IFrame {
 
     override fun isComplete() = (rolls.first() !is NotRolled && rolls.second() !is NotRolled) || isStrike()
 
-    fun applyFrameScore(score: Score) =
-            score.add(totalRolled())
-                 .add(getFrameBonus())
+    fun applyFrameScore(score: Score): Score {
 
-    override fun getFrameBonus(): Score {
+        return applyFrameBonus(score.add(totalRolled()))
+    }
+
+    open fun applyFrameBonus(score: Score): Score {
         return when {
-            this.isStrike() -> nextFrame.giveStrikeBonus()
-            this.isSpare() -> nextFrame.giveSpareBonus()
-            else -> Score()
+            this.isStrike() -> nextFrame.applyStrikeBonus(score)
+            this.isSpare() -> nextFrame.applySpareBonus(score)
+            else -> score
         }
     }
 
-    override fun giveStrikeBonus() : Score {
-        var strikeBonus = totalRolled()
+    override fun applyStrikeBonus(score: Score) : Score {
+        var updatedScore = score.add(totalRolled())
         if (isStrike()) {
-            strikeBonus = strikeBonus.add(nextFrame.giveSpareBonus())
+            updatedScore = nextFrame.applySpareBonus(updatedScore)
         }
-        return strikeBonus
+        return updatedScore
     }
 
-     override fun giveSpareBonus(): Score {
-        return Score().add(rolls.first())
+     override fun applySpareBonus(score: Score): Score {
+        return score.add(rolls.first())
     }
 }

@@ -8,15 +8,11 @@ class EmptyFrame : IFrame {
         return false
     }
 
-    override fun getFrameBonus(): Score {
-        return Score(0)
+    override fun applyStrikeBonus(score: Score): Score {
+        return score
     }
 
-    override fun giveStrikeBonus(): Score {
-        return Score(0)
-    }
-
-    override fun giveSpareBonus(): Score {
-        return Score(0)
+    override fun applySpareBonus(score: Score): Score {
+        return score
     }
 }

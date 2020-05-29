@@ -5,9 +5,7 @@ interface IFrame {
 
     fun isComplete(): Boolean
 
-    fun getFrameBonus(): Score
+    fun applyStrikeBonus(score: Score): Score
 
-    fun giveStrikeBonus(): Score
-
-    fun giveSpareBonus() : Score
+    fun applySpareBonus(score: Score) : Score
 }
