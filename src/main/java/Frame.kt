@@ -1,33 +1,30 @@
-open class Frame : IFrame {
+open class Frame() : IFrame {
 
     companion object {
         const val MAX_PINS = 10
     }
 
-    protected var rolls = Rolls()
+    private var rolls = Rolls()
 
-    protected var nextFrame : IFrame = EmptyFrame()
+    private var nextFrame: IFrame = EmptyFrame()
 
-    fun setNext(frame: Frame) {
+    override fun setNext(frame: IFrame) {
         nextFrame = frame
     }
 
-    fun roll(pins: Int) {
+    override fun roll(pins: Int) {
         rolls.add(pins)
     }
 
-    protected fun isSpare() = !isStrike() && totalRolled() == Score(MAX_PINS)
+    fun isSpare() = !isStrike() && totalRolled() == Score(MAX_PINS)
 
-    protected fun isStrike() = rolls.first() is Strike
+    fun isStrike() = rolls.first() is Strike
 
-    override fun totalRolled() =
-            Score().add(rolls.first())
-                   .add(rolls.second())
+    override fun totalRolled() = rolls.totalRolled()
 
     override fun isComplete() = (rolls.first() !is NotRolled && rolls.second() !is NotRolled) || isStrike()
 
-    fun applyFrameScore(score: Score): Score {
-
+    override fun applyFrameScore(score: Score): Score {
         return applyFrameBonus(score.add(totalRolled()))
     }
 
@@ -39,15 +36,17 @@ open class Frame : IFrame {
         }
     }
 
-    override fun applyStrikeBonus(score: Score) : Score {
-        var updatedScore = score.add(totalRolled())
+    override fun applyStrikeBonus(score: Score): Score {
+        var updatedScore = score
+                .add(rolls.first())
+                .add(rolls.second())
         if (isStrike()) {
             updatedScore = nextFrame.applySpareBonus(updatedScore)
         }
         return updatedScore
     }
 
-     override fun applySpareBonus(score: Score): Score {
+    override fun applySpareBonus(score: Score): Score {
         return score.add(rolls.first())
     }
 }

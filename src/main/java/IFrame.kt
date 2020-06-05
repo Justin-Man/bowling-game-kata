@@ -1,5 +1,10 @@
 interface IFrame {
 
+    fun roll(pins: Int)
+
+    fun applyFrameScore(score: Score): Score
+
+    fun setNext(frame: IFrame)
 
     fun totalRolled(): Score
 

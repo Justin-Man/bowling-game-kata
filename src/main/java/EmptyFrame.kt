@@ -1,5 +1,13 @@
 class EmptyFrame : IFrame {
 
+    override fun roll(pins: Int) {}
+
+    override fun applyFrameScore(score: Score): Score {
+        return score
+    }
+
+    override fun setNext(frame: IFrame) {}
+
     override fun totalRolled(): Score {
         return Score(0)
     }

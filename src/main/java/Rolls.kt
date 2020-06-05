@@ -4,6 +4,7 @@ class Rolls {
     private val rolls = mutableListOf<Roll>()
 
     private val notRolled = NotRolled()
+
     fun add(pins: Int) {
         if (pins == MAX_PINS) {
             rolls.add(Strike())
@@ -20,7 +21,5 @@ class Rolls {
         return rolls.getOrElse(1) { notRolled }
     }
 
-    fun third() : Roll {
-        return rolls.getOrElse(2) { notRolled }
-    }
+    fun totalRolled() = rolls.fold(Score(0)) { acc, roll -> roll.apply(acc) }
 }

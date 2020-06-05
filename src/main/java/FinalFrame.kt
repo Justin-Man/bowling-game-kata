@@ -1,21 +1,40 @@
-class FinalFrame : Frame() {
+import java.lang.Exception
+
+class FinalFrame(private val frame: Frame = Frame()) : IFrame {
+
+    private var rollCount = 0
+
+    override fun roll(pins: Int) {
+        if (!isComplete()) {
+            frame.roll(pins)
+            rollCount++
+        }
+    }
+
+    override fun applyFrameScore(score: Score): Score {
+        return frame.applyFrameScore(score)
+    }
+
+    override fun setNext(frame: IFrame) {
+        throw Exception("Invalid operation")
+    }
 
     override fun totalRolled(): Score {
-        return super.totalRolled().add(rolls.third())
+        return frame.totalRolled()
     }
 
     override fun isComplete(): Boolean {
-        if (isStrike() || isSpare()) {
-           return rolls.third() !is NotRolled
+        if (frame.isStrike() || frame.isSpare()) {
+           return rollCount == 3
         }
-        return super.isComplete()
-    }
-
-    override fun applyFrameBonus(score: Score): Score {
-        return score
+        return frame.isComplete()
     }
 
     override fun applyStrikeBonus(score: Score): Score {
-        return score.add(super.totalRolled())
+        return frame.applyStrikeBonus(score)
+    }
+
+    override fun applySpareBonus(score: Score): Score {
+        return frame.applySpareBonus(score)
     }
 }

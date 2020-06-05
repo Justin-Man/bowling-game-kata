@@ -1,5 +1,5 @@
 class Frames {
-    private val frames = mutableListOf<Frame>()
+    private val frames = mutableListOf<IFrame>()
 
     fun allFramesComplete() = frames.size == 10 && frames.all { it.isComplete() }
     fun roll(pins: Int) {
@@ -13,7 +13,7 @@ class Frames {
         }
     }
 
-    private fun addNewFrame(): Frame {
+    private fun addNewFrame(): IFrame {
         val frame = if (frames.size == 9) FinalFrame() else Frame()
         frames.add(frame)
         return frame
