@@ -6,8 +6,6 @@ class EmptyFrame : IFrame {
         return score
     }
 
-    override fun setNext(frame: IFrame) {}
-
     override fun totalRolled(): Score {
         return Score(0)
     }
@@ -16,11 +14,11 @@ class EmptyFrame : IFrame {
         return false
     }
 
-    override fun applyStrikeBonus(score: Score): Score {
+    override fun addStrikeBonusForPreviousFrame(score: Score): Score {
         return score
     }
 
-    override fun applySpareBonus(score: Score): Score {
+    override fun addSpareBonusForPreviousFrame(score: Score): Score {
         return score
     }
 }

@@ -1,22 +1,25 @@
+import java.util.*
+
 class Frames {
     private val frames = mutableListOf<IFrame>()
+    private var currentFrame = 0
 
-    fun allFramesComplete() = frames.size == 10 && frames.all { it.isComplete() }
-    fun roll(pins: Int) {
-        if (frames.size == 0) {
-            addNewFrame()
+    init {
+        frames.add(FinalFrame())
+        for(i in 0 until 9) {
+            val nextFrame = frames[i]
+            frames.add(Frame(nextFrame))
         }
-        frames.last().roll(pins)
-
-        if (frames.size < 10 && frames.last().isComplete()) {
-           frames.last().setNext(addNewFrame())
-        }
+        frames.reverse()
     }
 
-    private fun addNewFrame(): IFrame {
-        val frame = if (frames.size == 9) FinalFrame() else Frame()
-        frames.add(frame)
-        return frame
+    fun allFramesComplete() = frames.all { it.isComplete() }
+    fun roll(pins: Int) {
+        frames[currentFrame].roll(pins)
+
+        if (frames[currentFrame].isComplete()) {
+            currentFrame++
+        }
     }
 
     fun calculateTotalScore(): Score {

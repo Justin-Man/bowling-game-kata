@@ -1,6 +1,4 @@
-import java.lang.Exception
-
-class FinalFrame(private val frame: Frame = Frame()) : IFrame {
+class FinalFrame(private val frame: Frame = Frame(EmptyFrame())) : IFrame {
 
     private var rollCount = 0
 
@@ -15,10 +13,6 @@ class FinalFrame(private val frame: Frame = Frame()) : IFrame {
         return frame.applyFrameScore(score)
     }
 
-    override fun setNext(frame: IFrame) {
-        throw Exception("Invalid operation")
-    }
-
     override fun totalRolled(): Score {
         return frame.totalRolled()
     }
@@ -30,11 +24,11 @@ class FinalFrame(private val frame: Frame = Frame()) : IFrame {
         return frame.isComplete()
     }
 
-    override fun applyStrikeBonus(score: Score): Score {
-        return frame.applyStrikeBonus(score)
+    override fun addStrikeBonusForPreviousFrame(score: Score): Score {
+        return frame.addStrikeBonusForPreviousFrame(score)
     }
 
-    override fun applySpareBonus(score: Score): Score {
-        return frame.applySpareBonus(score)
+    override fun addSpareBonusForPreviousFrame(score: Score): Score {
+        return frame.addSpareBonusForPreviousFrame(score)
     }
 }

@@ -1,16 +1,10 @@
-open class Frame() : IFrame {
+open class Frame(private val nextFrame: IFrame) : IFrame {
 
     companion object {
         const val MAX_PINS = 10
     }
 
     private var rolls = Rolls()
-
-    private var nextFrame: IFrame = EmptyFrame()
-
-    override fun setNext(frame: IFrame) {
-        nextFrame = frame
-    }
 
     override fun roll(pins: Int) {
         rolls.add(pins)
@@ -30,23 +24,23 @@ open class Frame() : IFrame {
 
     open fun applyFrameBonus(score: Score): Score {
         return when {
-            this.isStrike() -> nextFrame.applyStrikeBonus(score)
-            this.isSpare() -> nextFrame.applySpareBonus(score)
+            this.isStrike() -> nextFrame.addStrikeBonusForPreviousFrame(score)
+            this.isSpare() -> nextFrame.addSpareBonusForPreviousFrame(score)
             else -> score
         }
     }
 
-    override fun applyStrikeBonus(score: Score): Score {
+    override fun addStrikeBonusForPreviousFrame(score: Score): Score {
         var updatedScore = score
                 .add(rolls.first())
                 .add(rolls.second())
-        if (isStrike()) {
-            updatedScore = nextFrame.applySpareBonus(updatedScore)
+        if (isStrike()) { // if current frame is strike add the next two rolls
+            updatedScore = nextFrame.addSpareBonusForPreviousFrame(updatedScore)
         }
         return updatedScore
     }
 
-    override fun applySpareBonus(score: Score): Score {
+    override fun addSpareBonusForPreviousFrame(score: Score): Score {
         return score.add(rolls.first())
     }
 }
