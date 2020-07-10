@@ -3,35 +3,35 @@ class Game {
 
     private val rolls = mutableListOf<Int>()
 
-    private var frameIndex = 0
     var isGameOver = false
 
     fun roll(pins: Int) {
         if (isGameOver) throw GameOverException()
 
         rolls.add(pins)
-        score = Score(0)
+        var runningScore = 0
         var startNewFrame = true
         var finalFrameRolls = 0
-        frameIndex = 0
+        var frameIndex = 0
         rolls.forEachIndexed { index, roll ->
             if (startNewFrame) frameIndex++
 
+            runningScore += roll
             if (frameIndex != 10) {
                 val isSpare = !startNewFrame && (roll + rolls[index - 1] == 10)
                 val isStrike = startNewFrame && roll == 10
-                score = score.add(Score(roll))
-                if(isSpare) {
+                if (isSpare) {
                     if (index < rolls.lastIndex) {
-                        score = score.add(Score(rolls[index + 1]))
+                        runningScore += rolls[index + 1]
                     }
                 }
-                if(isStrike) {
+                if (isStrike) {
                     if (index < rolls.lastIndex) {
-                        score = score.add(Score(rolls[index + 1]))
+                        runningScore += rolls[index + 1]
+
                     }
-                    if(index + 1 < rolls.lastIndex) {
-                        score = score.add(Score(rolls[index + 2]))
+                    if (index + 1 < rolls.lastIndex) {
+                        runningScore += rolls[index + 2]
                     }
                     startNewFrame = true
                 } else {
@@ -40,11 +40,12 @@ class Game {
             } else {
                 startNewFrame = false
                 finalFrameRolls++
-                score = score.add(Score(roll))
-                if(finalFrameRolls == 3) isGameOver = true
+
+                if (finalFrameRolls == 3) isGameOver = true
                 else if (finalFrameRolls == 2 && (roll + rolls[index - 1] < 10)) isGameOver = true
             }
         }
+        score = Score(runningScore)
     }
 }
 
