@@ -48,3 +48,7 @@ class Game {
     }
 }
 
+// TODO Method to print out score card at any time
+// write for both procedural implementation and refactored impl and compare how easy it is to integrate
+// and change the code
+
