@@ -150,6 +150,56 @@ class BowlingGameTest {
         assertEquals(Score(60), game.score)
     }
 
+    @Test
+    fun `score card is 300 for perfect game`() {
+        for (i in 0 until 9) {
+            rollStrike()
+        }
+
+        rollStrike()
+        rollStrike()
+        rollStrike()
+
+        val scores = game.getScoreCard()
+
+        for (i in scores.indices) {
+            assertEquals(30 * (i + 1), scores[i])
+        }
+    }
+
+    @Test
+    fun `score card is 60 for 3 strikes`() {
+        for (i in 0 until 3) {
+            rollStrike()
+        }
+
+        val scores = game.getScoreCard()
+
+        assertEquals(30, scores[0])
+        assertEquals(50, scores[1])
+        assertEquals(60, scores[2])
+    }
+
+    @Test
+    fun `score card for spares`() {
+        rollSpare()
+        rollSpare()
+
+        val scores = game.getScoreCard()
+
+        assertEquals(16, scores[0])
+        assertEquals(26, scores[1])
+    }
+
+    @Test
+    fun `score card is 0 for empty game`() {
+        rollManyEmptyFrames(10)
+
+        val scores = game.getScoreCard()
+
+        assertEquals(0, scores.sum())
+    }
+
     private fun rollStrike() {
         game.roll(10)
     }
