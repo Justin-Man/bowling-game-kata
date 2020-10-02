@@ -17,5 +17,9 @@ class Game {
     fun getScoreCard() : List<Score> {
         return frames.getCumulativeScore()
     }
+
+    fun getScoreReport(): List<String> {
+        return frames.getScoreReport()
+    }
 }
 

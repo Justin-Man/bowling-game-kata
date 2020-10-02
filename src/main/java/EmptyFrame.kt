@@ -21,4 +21,8 @@ class EmptyFrame : IFrame {
     override fun addSpareBonusForPreviousFrame(score: Score): Score {
         return score
     }
+
+    override fun reportScore(index: Int): String {
+        TODO("Not yet implemented")
+    }
 }

@@ -41,4 +41,12 @@ class Frames {
 
         return scores
     }
+
+    fun getScoreReport(): List<String> {
+        val scoreReport = mutableListOf<String>()
+
+        scoreReport.add(frames.first().reportScore(0))
+
+        return scoreReport
+    }
 }

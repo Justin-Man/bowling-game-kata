@@ -31,4 +31,8 @@ class FinalFrame(private val frame: Frame = Frame(EmptyFrame())) : IFrame {
     override fun addSpareBonusForPreviousFrame(score: Score): Score {
         return frame.addSpareBonusForPreviousFrame(score)
     }
+
+    override fun reportScore(index: Int): String {
+        TODO("Not yet implemented")
+    }
 }

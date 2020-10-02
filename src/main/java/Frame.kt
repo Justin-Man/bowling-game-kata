@@ -43,4 +43,6 @@ open class Frame(private val nextFrame: IFrame) : IFrame {
     override fun addSpareBonusForPreviousFrame(score: Score): Score {
         return score.add(rolls.first())
     }
+
+    override fun reportScore(index: Int) = "* ${index + 1} [${rolls.first().pins}][${rolls.second().pins}]"
 }

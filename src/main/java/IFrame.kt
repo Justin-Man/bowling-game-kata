@@ -11,4 +11,6 @@ interface IFrame {
     fun addStrikeBonusForPreviousFrame(score: Score): Score
 
     fun addSpareBonusForPreviousFrame(score: Score) : Score
+
+    fun reportScore(index: Int): String
 }

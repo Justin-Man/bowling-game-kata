@@ -197,6 +197,16 @@ class BowlingGameTest {
         assertEquals(0, scores.sumBy { it.gameScore })
     }
 
+    @Test
+    fun `score report is displayed for 1 frame without strike or spare`() {
+        game.roll(8)
+        game.roll(1)
+
+        val scoreReport = game.getScoreReport()
+
+        assertEquals("* 1 [8][1]", scoreReport.first())
+    }
+
     private fun rollStrike() {
         game.roll(10)
     }
