@@ -1,4 +1,5 @@
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertFailsWith
@@ -6,6 +7,7 @@ import kotlin.test.assertFailsWith
 class BowlingGameTest {
 
     lateinit var game: Game
+
     @Before
     fun setUp() {
         game = Game()
@@ -150,6 +152,51 @@ class BowlingGameTest {
         assertEquals(Score(60), game.score)
     }
 
+    @Test
+    fun `score card is 300 for perfect game`() {
+        rollPerfectScore()
+
+        val scores = game.getScoreCard()
+
+        assertEquals(10, scores.size)
+        for (i in scores.indices) {
+            assertEquals(i.toString(), 30 * (i + 1), scores[i].gameScore)
+        }
+    }
+
+    @Test
+    fun `score card is 60 for 3 strikes`() {
+        for (i in 0 until 3) {
+            rollStrike()
+        }
+
+        val scores = game.getScoreCard()
+
+        assertEquals(30, scores[0].gameScore)
+        assertEquals(50, scores[1].gameScore)
+        assertEquals(60, scores[2].gameScore)
+    }
+
+    @Test
+    fun `score card for spares`() {
+        rollSpare()
+        rollSpare()
+
+        val scores = game.getScoreCard()
+
+        assertEquals(16, scores[0].gameScore)
+        assertEquals(26, scores[1].gameScore)
+    }
+
+    @Test
+    fun `score card is 0 for empty game`() {
+        rollManyEmptyFrames(10)
+
+        val scores = game.getScoreCard()
+
+        assertEquals(0, scores.sumBy { it.gameScore })
+    }
+
     private fun rollStrike() {
         game.roll(10)
     }
@@ -165,8 +212,18 @@ class BowlingGameTest {
     }
 
     private fun rollManyEmptyFrames(frames: Int) {
-        for(i in 0 until frames) {
+        for (i in 0 until frames) {
             rollEmptyFrame()
         }
+    }
+
+    private fun rollPerfectScore() {
+        for (i in 0 until 9) {
+            rollStrike()
+        }
+
+        rollStrike()
+        rollStrike()
+        rollStrike()
     }
 }

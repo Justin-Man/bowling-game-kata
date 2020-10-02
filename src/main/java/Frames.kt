@@ -30,4 +30,15 @@ class Frames {
 
         return score
     }
+
+    fun getCumulativeScore() : List<Score> {
+        val scores = mutableListOf<Score>()
+        var score = Score()
+        frames.forEach {
+            score = it.applyFrameScore(score)
+            scores.add(score)
+        }
+
+        return scores
+    }
 }

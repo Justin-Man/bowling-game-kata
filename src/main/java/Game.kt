@@ -13,5 +13,9 @@ class Game {
 
         score = frames.calculateTotalScore()
     }
+
+    fun getScoreCard() : List<Score> {
+        return frames.getCumulativeScore()
+    }
 }
 
