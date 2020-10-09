@@ -6,10 +6,14 @@ class Rolls {
     private val notRolled = NotRolled()
 
     fun add(pins: Int) {
-        when {
-            pins == MAX_PINS -> rolls.add(Strike())
-            pins + first().pins == MAX_PINS -> rolls.add(Spare(pins))
-            else -> rolls.add(Roll(pins))
+       rolls.add(createRoll(pins))
+    }
+
+    private fun createRoll(pins : Int) : Roll {
+        return when {
+            pins == MAX_PINS -> Strike()
+            pins + first().pins == MAX_PINS -> Spare(pins)
+            else -> Roll(pins)
         }
     }
 
