@@ -33,6 +33,6 @@ class FinalFrame(private val frame: Frame = Frame(EmptyFrame())) : IFrame {
     }
 
     override fun reportScore(index: Int): String {
-        TODO("Not yet implemented")
+        return frame.reportScore(index)
     }
 }

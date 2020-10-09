@@ -44,5 +44,7 @@ open class Frame(private val nextFrame: IFrame) : IFrame {
         return score.add(rolls.first())
     }
 
-    override fun reportScore(index: Int) = "* ${index + 1} [${rolls.first().pins}][${rolls.second().pins}]"
+    override fun reportScore(index: Int) : String {
+        return "* ${index + 1} ${rolls.getScoreReport()}"
+    }
 }

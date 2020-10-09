@@ -207,6 +207,36 @@ class BowlingGameTest {
         assertEquals("* 1 [8][1]", scoreReport.first())
     }
 
+    @Test
+    fun `score report is displayed for 1 frame with strike bonus`() {
+        rollStrike()
+
+        val scoreReport = game.getScoreReport()
+
+        assertEquals("* 1 [x]", scoreReport.first())
+    }
+
+    @Test
+    fun `score report is displayed for 1 frame with spare bonus`() {
+        rollSpare()
+
+        val scoreReport = game.getScoreReport()
+
+        assertEquals("* 1 [6][/]", scoreReport.first())
+    }
+
+    @Test
+    fun `score report is displayed for perfect score`() {
+        rollPerfectScore()
+
+        val scoreReport = game.getScoreReport()
+
+        for (i in 0..8) {
+            assertEquals("* ${i+1} [x]", scoreReport[i])
+        }
+        assertEquals("* 10 [x][x][x]", scoreReport[9])
+    }
+
     private fun rollStrike() {
         game.roll(10)
     }

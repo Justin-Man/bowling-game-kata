@@ -6,10 +6,10 @@ class Rolls {
     private val notRolled = NotRolled()
 
     fun add(pins: Int) {
-        if (pins == MAX_PINS) {
-            rolls.add(Strike())
-        } else {
-            rolls.add(Roll(pins))
+        when {
+            pins == MAX_PINS -> rolls.add(Strike())
+            pins + first().pins == MAX_PINS -> rolls.add(Spare(pins))
+            else -> rolls.add(Roll(pins))
         }
     }
 
@@ -22,4 +22,6 @@ class Rolls {
     }
 
     fun totalRolled() = rolls.fold(Score(0)) { acc, roll -> roll.apply(acc) }
+
+    fun getScoreReport() = rolls.fold("") {acc, roll -> acc + roll.scoreReport() }
 }
