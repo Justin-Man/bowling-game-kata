@@ -3,6 +3,7 @@ class Game {
 
     private val rolls = mutableListOf<Int>()
     private val scoreCard = mutableListOf<Int>()
+    private val scoreReport = mutableListOf<String>()
 
     var isGameOver = false
 
@@ -12,15 +13,21 @@ class Game {
         rolls.add(pins)
         var runningScore = 0
         scoreCard.clear()
+        scoreReport.clear()
         var startNewFrame = true
         var finalFrameRolls = 0
         var frameIndex = 1
+        var frameReport = ""
+
         for (index in 0 until rolls.size) {
+            if (startNewFrame) frameReport = "* $frameIndex "
             runningScore += rolls[index]
             if (frameIndex != 10) {
                 val isSpare = !startNewFrame && (rolls[index] + rolls[index - 1] == 10)
                 val isStrike = startNewFrame && rolls[index] == 10
+
                 if (!isStrike && !isSpare) {
+                    frameReport += "[${rolls[index]}]"
                     startNewFrame = !startNewFrame
                 } else {
                     val bonusRollIndex = index + 1
@@ -29,7 +36,10 @@ class Game {
                     runningScore += rolls.getOrNull(bonusRollIndex) ?: 0
 
                     if (isStrike) {
+                        frameReport += "[x]"
                         runningScore += rolls.getOrNull(strikeOnlyBonusIndex) ?: 0
+                    } else {
+                        frameReport += "[/]"
                     }
 
                     startNewFrame = true
@@ -38,11 +48,25 @@ class Game {
                 startNewFrame = false
                 finalFrameRolls++
 
+                if (finalFrameRolls == 2 && rolls[index - 1] != 10 && (rolls[index] + rolls[index - 1] == 10)) {
+                    frameReport += "[/]"
+                } else if(rolls[index] == 10) {
+                    frameReport += "[x]"
+                } else {
+                    frameReport += "[${rolls[index]}]"
+                }
+
                 if (finalFrameRolls == 3) isGameOver = true
-                else if (finalFrameRolls == 2 && (rolls[index] + rolls[index - 1] < 10)) isGameOver = true
+                else if (finalFrameRolls == 2 && (rolls[index] + rolls[index - 1] < 10)) {
+                    frameReport += "[]"
+
+                    isGameOver = true
+                }
             }
             if (startNewFrame || isGameOver) {
                 scoreCard.add(runningScore)
+                scoreReport.add(frameReport)
+                frameReport = ""
                 frameIndex++
             }
         }
@@ -53,10 +77,10 @@ class Game {
     fun getScoreCard(): List<Int> {
         return scoreCard
     }
-}
 
-// TODO Method to print out score card at any time
-// write for both procedural implementation and refactored impl and compare how easy it is to integrate
-// and change the code
+    fun getScoreReport(): List<String> {
+        return scoreReport
+    }
+}
 
 

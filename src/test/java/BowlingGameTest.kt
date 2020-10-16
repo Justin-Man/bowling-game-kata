@@ -130,13 +130,7 @@ class BowlingGameTest {
 
     @Test
     fun `score is 300 for game with all strikes scored`() {
-        for (i in 0 until 9) {
-            rollStrike()
-        }
-
-        rollStrike()
-        rollStrike()
-        rollStrike()
+        rollPerfectScore()
 
         assertEquals(Score(300), game.score)
     }
@@ -152,13 +146,7 @@ class BowlingGameTest {
 
     @Test
     fun `score card is 300 for perfect game`() {
-        for (i in 0 until 9) {
-            rollStrike()
-        }
-
-        rollStrike()
-        rollStrike()
-        rollStrike()
+        rollPerfectScore()
 
         val scores = game.getScoreCard()
 
@@ -200,6 +188,81 @@ class BowlingGameTest {
         assertEquals(0, scores.sum())
     }
 
+    @Test
+    fun `score report is displayed for 1 frame without strike or spare`() {
+        game.roll(8)
+        game.roll(1)
+
+        val scoreReport = game.getScoreReport()
+
+        assertEquals("* 1 [8][1]", scoreReport.first())
+    }
+
+    @Test
+    fun `score report is displayed for 1 frame with strike bonus`() {
+        rollStrike()
+
+        val scoreReport = game.getScoreReport()
+
+        assertEquals("* 1 [x]", scoreReport.first())
+    }
+
+    @Test
+    fun `score report is displayed for 1 frame with spare bonus`() {
+        rollSpare()
+
+        val scoreReport = game.getScoreReport()
+
+        assertEquals("* 1 [6][/]", scoreReport.first())
+    }
+
+    @Test
+    fun `score report is displayed for perfect score`() {
+        rollPerfectScore()
+
+        val scoreReport = game.getScoreReport()
+
+        for (i in 0..8) {
+            assertEquals("* ${i+1} [x]", scoreReport[i])
+        }
+        assertEquals("* 10 [x][x][x]", scoreReport[9])
+    }
+
+    @Test
+    fun `score report displayed for strike in final frame`() {
+        rollManyEmptyFrames(9)
+        game.roll(0)
+        rollStrike()
+        game.roll(1)
+
+        val scoreReport = game.getScoreReport()
+
+        assertEquals("* 10 [0][/][1]", scoreReport[9])
+    }
+
+    @Test
+    fun `score report displayed for spare and strike in final frame`() {
+        rollManyEmptyFrames(9)
+        game.roll(6)
+        game.roll(4)
+        rollStrike()
+
+        val scoreReport = game.getScoreReport()
+
+        assertEquals("* 10 [6][/][x]", scoreReport[9])
+    }
+
+    @Test
+    fun `score report displayed for normal score in final frame`() {
+        rollManyEmptyFrames(9)
+        game.roll(6)
+        game.roll(3)
+
+        val scoreReport = game.getScoreReport()
+
+        assertEquals("* 10 [6][3][]", scoreReport[9])
+    }
+
     private fun rollStrike() {
         game.roll(10)
     }
@@ -212,6 +275,12 @@ class BowlingGameTest {
     private fun rollEmptyFrame() {
         game.roll(0)
         game.roll(0)
+    }
+
+    private fun rollPerfectScore() {
+        for (i in 0 until 12) {
+            rollStrike()
+        }
     }
 
     private fun rollManyEmptyFrames(frames: Int) {
