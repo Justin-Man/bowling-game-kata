@@ -1,10 +1,11 @@
-open class Frame(private val nextFrame: IFrame) : IFrame {
+open class Frame(
+    private val nextFrame: IFrame,
+    private var rolls: Rolls = Rolls()
+) : IFrame {
 
     companion object {
         const val MAX_PINS = 10
     }
-
-    private var rolls = Rolls()
 
     override fun roll(pins: Int) {
         rolls.add(pins)

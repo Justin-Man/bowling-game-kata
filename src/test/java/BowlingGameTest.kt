@@ -237,6 +237,51 @@ class BowlingGameTest {
         assertEquals("* 10 [x][x][x]", scoreReport[9])
     }
 
+    @Test
+    fun `score report for a spare`() {
+        game.roll(0)
+        rollStrike()
+
+        val scoreReport = game.getScoreReport()
+
+        assertEquals("* 1 [0][/]", scoreReport[0])
+    }
+
+    @Test
+    fun `score report displayed for strike in final frame`() {
+        rollManyEmptyFrames(9)
+        game.roll(0)
+        rollStrike()
+        game.roll(1)
+
+        val scoreReport = game.getScoreReport()
+
+        assertEquals("* 10 [0][/][1]", scoreReport[9])
+    }
+
+        @Test
+    fun `score report displayed for spare and strike in final frame`() {
+        rollManyEmptyFrames(9)
+        game.roll(6)
+        game.roll(4)
+        rollStrike()
+
+        val scoreReport = game.getScoreReport()
+
+        assertEquals("* 10 [6][/][x]", scoreReport[9])
+    }
+
+    @Test
+    fun `score report displayed for normal score in final frame`() {
+        rollManyEmptyFrames(9)
+        game.roll(6)
+        game.roll(3)
+
+        val scoreReport = game.getScoreReport()
+
+        assertEquals("* 10 [6][3][]", scoreReport[9])
+    }
+
     private fun rollStrike() {
         game.roll(10)
     }

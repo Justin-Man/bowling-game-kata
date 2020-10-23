@@ -1,4 +1,4 @@
-class FinalFrame(private val frame: Frame = Frame(EmptyFrame())) : IFrame {
+class FinalFrame(private val frame: Frame = Frame(EmptyFrame(), FinalFrameRolls())) : IFrame {
 
     private var rollCount = 0
 

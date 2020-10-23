@@ -1,18 +1,18 @@
 import Frame.Companion.MAX_PINS
 
-class Rolls {
-    private val rolls = mutableListOf<Roll>()
+open class Rolls {
+    protected val rolls = mutableListOf<Roll>()
 
-    private val notRolled = NotRolled()
+    val notRolled = NotRolled()
 
     fun add(pins: Int) {
        rolls.add(createRoll(pins))
     }
 
-    private fun createRoll(pins : Int) : Roll {
+    open fun createRoll(pins: Int) : Roll {
         return when {
-            pins == MAX_PINS -> Strike()
-            pins + first().pins == MAX_PINS -> Spare(pins)
+            rolls.isEmpty() && pins == MAX_PINS -> Strike()
+            pins + last().pins == MAX_PINS -> Spare(pins)
             else -> Roll(pins)
         }
     }
@@ -25,7 +25,11 @@ class Rolls {
         return rolls.getOrElse(1) { notRolled }
     }
 
+    fun last() : Roll {
+        return if (rolls.isEmpty()) notRolled else rolls.last()
+    }
+
     fun totalRolled() = rolls.fold(Score(0)) { acc, roll -> roll.apply(acc) }
 
-    fun getScoreReport() = rolls.fold("") {acc, roll -> acc + roll.scoreReport() }
+    open fun getScoreReport() = rolls.fold("") {acc, roll -> acc + roll.scoreReport() }
 }
