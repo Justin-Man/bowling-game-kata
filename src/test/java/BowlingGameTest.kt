@@ -229,6 +229,16 @@ class BowlingGameTest {
     }
 
     @Test
+    fun `score report for a spare`() {
+        game.roll(0)
+        rollStrike()
+
+        val scoreReport = game.getScoreReport()
+
+        assertEquals("* 1 [0][/]", scoreReport[0])
+    }
+
+    @Test
     fun `score report displayed for strike in final frame`() {
         rollManyEmptyFrames(9)
         game.roll(0)
