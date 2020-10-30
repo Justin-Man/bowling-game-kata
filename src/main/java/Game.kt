@@ -17,14 +17,15 @@ class Game {
         var startNewFrame = true
         var finalFrameRolls = 0
         var frameIndex = 1
-        var frameReport = ""
+        var frameReport = "* 1 "
+        var isSpare = false
+        var isStrike = false
 
         for (index in 0 until rolls.size) {
-            if (startNewFrame) frameReport = "* $frameIndex "
             runningScore += rolls[index]
             if (frameIndex != 10) {
-                val isSpare = !startNewFrame && (rolls[index] + rolls[index - 1] == 10)
-                val isStrike = startNewFrame && rolls[index] == 10
+                isSpare = !startNewFrame && (rolls[index] + rolls[index - 1] == 10)
+                isStrike = startNewFrame && rolls[index] == 10
 
                 if (!isStrike && !isSpare) {
                     frameReport += "[${rolls[index]}]"
@@ -65,9 +66,16 @@ class Game {
             }
             if (startNewFrame || isGameOver) {
                 scoreCard.add(runningScore)
+
+                if ((isStrike && (rolls.size > index + 2))
+                        || (isSpare && (rolls.size > index + 1))
+                        || (!isStrike && !isSpare)) {
+                      frameReport += " $runningScore"
+                }
+
                 scoreReport.add(frameReport)
-                frameReport = ""
                 frameIndex++
+                frameReport = "* $frameIndex "
             }
         }
 

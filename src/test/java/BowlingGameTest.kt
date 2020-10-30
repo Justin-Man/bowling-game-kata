@@ -195,7 +195,7 @@ class BowlingGameTest {
 
         val scoreReport = game.getScoreReport()
 
-        assertEquals("* 1 [8][1]", scoreReport.first())
+        assertEquals("* 1 [8][1] 9", scoreReport.first())
     }
 
     @Test
@@ -208,12 +208,43 @@ class BowlingGameTest {
     }
 
     @Test
-    fun `score report is displayed for 1 frame with spare bonus`() {
+    fun `show score report for strike without score until bonus is known`() {
+        rollStrike()
+        game.roll(1)
+
+        val scoreReport = game.getScoreReport()
+
+        assertEquals("* 1 [x]", scoreReport.first())
+    }
+
+    @Test
+    fun `show score report for strike when bonus is known`() {
+        rollStrike()
+        game.roll(1)
+        game.roll(1)
+
+        val scoreReport = game.getScoreReport()
+
+        assertEquals("* 1 [x] 12", scoreReport.first())
+    }
+
+    @Test
+    fun `score report is displayed for 1 frame with spare`() {
         rollSpare()
 
         val scoreReport = game.getScoreReport()
 
         assertEquals("* 1 [6][/]", scoreReport.first())
+    }
+
+    @Test
+    fun `score report is displayed for 1 frame with spare including bonus`() {
+        rollSpare()
+        game.roll(1)
+
+        val scoreReport = game.getScoreReport()
+
+        assertEquals("* 1 [6][/] 11", scoreReport.first())
     }
 
     @Test
@@ -223,9 +254,9 @@ class BowlingGameTest {
         val scoreReport = game.getScoreReport()
 
         for (i in 0..8) {
-            assertEquals("* ${i+1} [x]", scoreReport[i])
+            assertEquals("* ${i+1} [x] ${30 * (i+1)}", scoreReport[i])
         }
-        assertEquals("* 10 [x][x][x]", scoreReport[9])
+        assertEquals("* 10 [x][x][x] 300", scoreReport[9])
     }
 
     @Test
@@ -270,7 +301,7 @@ class BowlingGameTest {
 
         val scoreReport = game.getScoreReport()
 
-        assertEquals("* 10 [6][3][]", scoreReport[9])
+        assertEquals("* 10 [6][3][] 9", scoreReport[9])
     }
 
     private fun rollStrike() {
