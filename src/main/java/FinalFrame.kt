@@ -32,7 +32,20 @@ class FinalFrame(private val frame: Frame = Frame(EmptyFrame(), FinalFrameRolls(
         return frame.addSpareBonusForPreviousFrame(score)
     }
 
-    override fun reportScore(index: Int): String {
-        return frame.reportScore(index)
+    override fun reportScore(index: Int, score: Score): String {
+        if (isComplete()) return "* ${index + 1} ${rolls.getScoreReport()} ${score.gameScore}"
+        if (isStrike() && nextFrame.isStrikeBonusAvailable()) return "* ${index + 1} ${rolls.getScoreReport()} ${score.gameScore}"
+        if (isSpare() && nextFrame.isSpareBonusAvailable()) return "* ${index + 1} ${rolls.getScoreReport()} ${score.gameScore}"
+
+        return "* ${index + 1} ${rolls.getScoreReport()}"
+
+    }
+
+    override fun isStrikeBonusAvailable(): Boolean {
+        return rollCount >= 2
+    }
+
+    override fun isSpareBonusAvailable(): Boolean {
+        return rollCount >= 1
     }
 }

@@ -1,5 +1,3 @@
-import java.util.*
-
 class Frames {
     private val frames = mutableListOf<IFrame>()
     private var currentFrame = 0
@@ -44,9 +42,11 @@ class Frames {
 
     fun getScoreReport(): List<String> {
         val scoreReport = mutableListOf<String>()
+        var score = Score()
         
         frames.forEachIndexed { index, frame ->
-            scoreReport.add(frame.reportScore(index))
+            score = frame.applyFrameScore(score)
+            scoreReport.add(frame.reportScore(index, score))
         }
 
         return scoreReport

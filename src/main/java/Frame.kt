@@ -45,7 +45,20 @@ open class Frame(
         return score.add(rolls.first())
     }
 
-    override fun reportScore(index: Int) : String {
+    override fun reportScore(index: Int, score: Score) : String {
+        if(!isStrike() && !isSpare()) return "* ${index + 1} ${rolls.getScoreReport()} ${score.gameScore}"
+        if (isStrike() && nextFrame.isStrikeBonusAvailable()) return "* ${index + 1} ${rolls.getScoreReport()} ${score.gameScore}"
+        if (isSpare() && nextFrame.isSpareBonusAvailable()) return "* ${index + 1} ${rolls.getScoreReport()} ${score.gameScore}"
+
         return "* ${index + 1} ${rolls.getScoreReport()}"
+    }
+
+    override fun isStrikeBonusAvailable(): Boolean {
+        return if (isStrike()) nextFrame.isSpareBonusAvailable()
+        else (rolls.second() !is NotRolled)
+    }
+
+    override fun isSpareBonusAvailable(): Boolean {
+        return rolls.first() !is NotRolled
     }
 }

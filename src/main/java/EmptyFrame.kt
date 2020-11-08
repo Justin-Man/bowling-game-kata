@@ -22,7 +22,15 @@ class EmptyFrame : IFrame {
         return score
     }
 
-    override fun reportScore(index: Int): String {
+    override fun reportScore(index: Int, score: Score): String {
         TODO("Not yet implemented")
+    }
+
+    override fun isStrikeBonusAvailable(): Boolean {
+        return false
+    }
+
+    override fun isSpareBonusAvailable(): Boolean {
+        return false
     }
 }
