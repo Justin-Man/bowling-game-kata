@@ -1,6 +1,4 @@
-class FinalFrame(private val frame: Frame = Frame(EmptyFrame(), FinalFrameRolls())) : IFrame {
-
-    private var rollCount = 0
+class FinalFrame(private val rolls: FinalFrameRolls = FinalFrameRolls(), private val frame: Frame = Frame(EmptyFrame(), rolls)) : IFrame {
 
     override fun roll(pins: Int) {
         if (!isComplete()) {
@@ -34,11 +32,8 @@ class FinalFrame(private val frame: Frame = Frame(EmptyFrame(), FinalFrameRolls(
 
     override fun reportScore(index: Int, score: Score): String {
         if (isComplete()) return "* ${index + 1} ${rolls.getScoreReport()} ${score.gameScore}"
-        if (isStrike() && nextFrame.isStrikeBonusAvailable()) return "* ${index + 1} ${rolls.getScoreReport()} ${score.gameScore}"
-        if (isSpare() && nextFrame.isSpareBonusAvailable()) return "* ${index + 1} ${rolls.getScoreReport()} ${score.gameScore}"
 
         return "* ${index + 1} ${rolls.getScoreReport()}"
-
     }
 
     override fun isStrikeBonusAvailable(): Boolean {
