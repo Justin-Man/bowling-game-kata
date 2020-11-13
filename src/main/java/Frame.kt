@@ -17,7 +17,7 @@ open class Frame(
 
     override fun totalRolled() = rolls.totalRolled()
 
-    override fun isComplete() = (rolls.first() !is NotRolled && rolls.second() !is NotRolled) || isStrike()
+    override fun isComplete() = (rolls.first().hasBeenRolled() && rolls.second().hasBeenRolled()) || isStrike()
 
     override fun applyFrameScore(score: Score): Score {
         return applyFrameBonus(score.add(totalRolled()))
@@ -55,10 +55,10 @@ open class Frame(
 
     override fun isStrikeBonusAvailable(): Boolean {
         return if (isStrike()) nextFrame.isSpareBonusAvailable()
-        else (rolls.second() !is NotRolled)
+        else (rolls.second().hasBeenRolled())
     }
 
     override fun isSpareBonusAvailable(): Boolean {
-        return rolls.first() !is NotRolled
+        return rolls.first().hasBeenRolled()
     }
 }

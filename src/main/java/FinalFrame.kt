@@ -3,7 +3,6 @@ class FinalFrame(private val rolls: FinalFrameRolls = FinalFrameRolls(), private
     override fun roll(pins: Int) {
         if (!isComplete()) {
             frame.roll(pins)
-            rollCount++
         }
     }
 
@@ -17,7 +16,7 @@ class FinalFrame(private val rolls: FinalFrameRolls = FinalFrameRolls(), private
 
     override fun isComplete(): Boolean {
         if (frame.isStrike() || frame.isSpare()) {
-           return rollCount == 3
+           return rolls.third().hasBeenRolled()
         }
         return frame.isComplete()
     }
@@ -37,10 +36,10 @@ class FinalFrame(private val rolls: FinalFrameRolls = FinalFrameRolls(), private
     }
 
     override fun isStrikeBonusAvailable(): Boolean {
-        return rollCount >= 2
+        return rolls.second().hasBeenRolled()
     }
 
     override fun isSpareBonusAvailable(): Boolean {
-        return rollCount >= 1
+        return rolls.first().hasBeenRolled()
     }
 }

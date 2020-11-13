@@ -1,7 +1,7 @@
 import Frame.Companion.MAX_PINS
 
 open class Rolls {
-    protected val rolls = mutableListOf<Roll>()
+    protected val rolls = mutableListOf<IRoll>()
 
     val notRolled = NotRolled()
 
@@ -9,7 +9,7 @@ open class Rolls {
        rolls.add(createRoll(pins))
     }
 
-    open fun createRoll(pins: Int) : Roll {
+    open fun createRoll(pins: Int) : IRoll {
         return when {
             rolls.isEmpty() && pins == MAX_PINS -> Strike()
             pins + last().pins == MAX_PINS -> Spare(pins)
@@ -17,15 +17,15 @@ open class Rolls {
         }
     }
 
-    fun first() : Roll {
+    fun first() : IRoll {
         return rolls.getOrElse(0) { notRolled }
     }
 
-    fun second() : Roll {
+    fun second() : IRoll {
         return rolls.getOrElse(1) { notRolled }
     }
 
-    fun last() : Roll {
+    fun last() : IRoll {
         return if (rolls.isEmpty()) notRolled else rolls.last()
     }
 
