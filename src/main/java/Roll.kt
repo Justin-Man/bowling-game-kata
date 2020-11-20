@@ -1,13 +1,11 @@
 interface IRoll {
 
-    val pins: Int
-
     fun apply(score: Score) : Score
 
     fun scoreReport(): String
 }
 
-class Roll(override val pins : Int) : IRoll {
+class Roll(val pins : Int) : IRoll {
     override fun apply(score: Score) : Score {
         return score.add(Score(pins))
     }
@@ -19,7 +17,7 @@ fun IRoll.hasBeenRolled(): Boolean {
     return this !is NotRolled
 }
 
-class NotRolled(override val pins: Int = 0) : IRoll {
+class NotRolled : IRoll {
     override fun apply(score: Score) = score
 
     override fun scoreReport() = "[]"

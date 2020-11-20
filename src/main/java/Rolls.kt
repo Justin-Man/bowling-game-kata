@@ -9,13 +9,13 @@ open class Rolls {
        rolls.add(createRoll(pins))
     }
 
-    open fun createRoll(pins: Int) : IRoll {
-        return when {
-            rolls.isEmpty() && pins == MAX_PINS -> Strike()
-            pins + last().pins == MAX_PINS -> Spare(pins)
+    open fun createRoll(pins: Int) =
+        when {
+            allPinsKnockedDown(pins) -> if(rolls.isEmpty()) Strike() else Spare(pins)
             else -> Roll(pins)
         }
-    }
+
+    private fun allPinsKnockedDown(pins: Int) = last().apply(Score(pins)) == Score(MAX_PINS)
 
     fun first() : IRoll {
         return rolls.getOrElse(0) { notRolled }
